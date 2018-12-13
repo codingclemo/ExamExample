@@ -1,0 +1,47 @@
+# add version of docker compose file...latest is 3
+# add services that should be composed together
+
+# container_names must match the names in the nginxDefaultConf file
+# build must direct to responding folder
+# ports opens the port to the user outside our custom "webnet"
+# networks must be given a name, eg "webnet"
+
+# volumes stores data persistently in the /root folder, instead of  "ex4Volume" I can have any name
+
+version: '3'
+services:
+  gateway:
+    container_name: 'Gateway'
+    build: ./
+    ports:
+      - "80:80"
+    networks: 
+      - webnet
+  webapp:
+    container_name: 'W3DWebApp'
+    build: ./webapp/
+    networks: 
+      - webnet
+    depends_on:
+      - service
+      - render
+  service:
+    container_name: 'W3DAPI'
+    build: ./service/
+    networks:
+      - webnet
+    volumes:
+      - savedmodels:/root/var/opt/models
+  render:
+    container_name: 'W3DRenderer'
+    build: ./render/
+    networks: 
+      - webnet
+
+# docker command for "networks create webnet"
+networks:
+  webnet:
+
+# docker command for "volumes create ex4Volumes"
+volumes:
+  savedmodels:

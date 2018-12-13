@@ -1,0 +1,9 @@
+location /web {
+	proxy_pass http://W3DWebApp:2000;
+}
+ location /api {
+	proxy_pass http://W3DAPI:2351;
+}
+location /render {
+	proxy_pass http://W3DRenderer:5523;
+}
